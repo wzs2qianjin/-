@@ -21,6 +21,9 @@ Python 3.12.4、conda 24.5.0
 
 模块五依赖库：
 
+      numpy                      2.3.4
+      numpy-base                 2.3.3
+
 
 
 模块六依赖库：
