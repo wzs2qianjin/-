@@ -3,13 +3,15 @@
 Multi-segment Ship Lines Editor with hull_interface compatibility
 Receives three types of lines from Hull2DLineData, supports interactive adjustment
 """
+# pyright: reportMissingTypeStubs=false
+# pyright: reportUnknownMemberType=false
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from scipy.interpolate import CubicSpline
-import matplotlib
-from typing import List, Tuple, Optional, Dict
+# import matplotlib
+# from typing import List, Tuple, Optional, Dict
 
 # Import interface definitions
 try:
@@ -17,14 +19,14 @@ try:
 except ImportError:
     # Fallback definitions if import fails
     class Hull2DLineData:
-        def __init__(self, side_profile=None, half_breadth=None, cross_sections=None, line_version=1):
+        def __init__(self, side_profile=None, half_breadth=None, cross_sections=None, line_version=1):  # type: ignore
             self.side_profile = side_profile or []
             self.half_breadth = half_breadth or []
             self.cross_sections = cross_sections or {}
             self.line_version = line_version
 
     class InteractionEvent:
-        def __init__(self, event_type, line_type, target_point_idx, new_coords, cross_section_x=None):
+        def __init__(self, event_type, line_type, target_point_idx, new_coords, cross_section_x=None):  # type: ignore
             self.event_type = event_type
             self.line_type = line_type
             self.target_point_idx = target_point_idx
@@ -91,9 +93,9 @@ class MultiSegmentShipEditorInterface:
         self.interaction_events = []
         
         print("Multi-segment Ship Lines Editor initialized")
-        print(f"Side profile points: {len(hull_2d_data.side_profile)}")
-        print(f"Half-breadth points: {len(hull_2d_data.half_breadth)}")
-        print(f"Cross sections: {len(hull_2d_data.cross_sections)}")
+        print(f"Side profile points: {len(hull_2d_data.side_profile)}") # type: ignore
+        print(f"Half-breadth points: {len(hull_2d_data.half_breadth)}") # type: ignore
+        print(f"Cross sections: {len(hull_2d_data.cross_sections)}")    # type: ignore
         
         # Initial drawing
         self.initialize_curves()
@@ -135,9 +137,9 @@ class MultiSegmentShipEditorInterface:
         
         # Set current cross section
         if self.hull_2d_data.cross_sections:
-            self.current_cross_section_x = list(self.hull_2d_data.cross_sections.keys())[0]
+            self.current_cross_section_x = list(self.hull_2d_data.cross_sections.keys())[0] # type: ignore
     
-    def generate_smooth_curve(self, points, is_closed=False):
+    def generate_smooth_curve(self, points, is_closed=False):   # type: ignore
         """Generate smooth curve"""
         if len(points) < 2:
             return points
