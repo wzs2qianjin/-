@@ -9,6 +9,7 @@
         "fontweight",
         "inaxes",
         "interp",
+        "iscomplexobj",
         "matplotlib",
         "numpy",
         "scipy",
