@@ -1,0 +1,39 @@
+{
+    "cSpell.words": [
+        "boxstyle",
+        "darkorange",
+        "edgecolor",
+        "facecolor",
+        "figsize",
+        "fontsize",
+        "fontweight",
+        "inaxes",
+        "interp",
+        "iscomplexobj",
+        "matplotlib",
+        "numpy",
+        "scipy",
+        "suptitle",
+        "verticalalignment",
+        "xdata",
+        "xlabel",
+        "xlim",
+        "xticks",
+        "ydata",
+        "ylabel",
+        "ylim",
+        "yticks"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportUnknownArgumentType": "none",
+        "reportUnknownMemberType": "none",
+        "reportUnknownVariableType": "none",
+        "reportUnknownLambdaType": "none",
+        "reportUnknownParameterType": "none"
+    },
+    "python.analysis.autoImportCompletions": true,
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python-envs.pythonProjects": []
+}
