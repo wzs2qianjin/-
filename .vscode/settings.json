@@ -1,6 +1,29 @@
 {
     "cSpell.words": [
+        "boxstyle",
+        "darkorange",
+        "edgecolor",
+        "facecolor",
+        "figsize",
+        "fontsize",
+        "fontweight",
+        "inaxes",
         "interp",
-        "numpy"
-    ]
+        "matplotlib",
+        "numpy",
+        "scipy",
+        "suptitle",
+        "verticalalignment",
+        "xdata",
+        "xlabel",
+        "xlim",
+        "xticks",
+        "ydata",
+        "ylabel",
+        "ylim",
+        "yticks"
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python-envs.pythonProjects": []
 }
