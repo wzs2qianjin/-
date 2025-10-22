@@ -6,6 +6,7 @@ Receives three types of lines from Hull2DLineData, supports interactive adjustme
 # pyright: reportMissingTypeStubs=false
 # pyright: reportUnknownMemberType=false
 
+from hull_interface import Hull2DLineData, InteractionEvent
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
@@ -14,24 +15,24 @@ from scipy.interpolate import CubicSpline
 # from typing import List, Tuple, Optional, Dict
 
 # Import interface definitions
-try:
-    from hull_interface import Hull2DLineData, InteractionEvent
-except ImportError:
-    # Fallback definitions if import fails
-    class Hull2DLineData:
-        def __init__(self, side_profile=None, half_breadth=None, cross_sections=None, line_version=1):  # type: ignore
-            self.side_profile = side_profile or []
-            self.half_breadth = half_breadth or []
-            self.cross_sections = cross_sections or {}
-            self.line_version = line_version
+# try:
+#     from hull_interface import Hull2DLineData, InteractionEvent
+# except ImportError:
+#     # Fallback definitions if import fails
+#     class Hull2DLineData:
+#         def __init__(self, side_profile=None, half_breadth=None, cross_sections=None, line_version=1):  # type: ignore
+#             self.side_profile = side_profile or []
+#             self.half_breadth = half_breadth or []
+#             self.cross_sections = cross_sections or {}
+#             self.line_version = line_version
 
-    class InteractionEvent:
-        def __init__(self, event_type, line_type, target_point_idx, new_coords, cross_section_x=None):  # type: ignore
-            self.event_type = event_type
-            self.line_type = line_type
-            self.target_point_idx = target_point_idx
-            self.new_coords = new_coords
-            self.cross_section_x = cross_section_x
+#     class InteractionEvent:
+#         def __init__(self, event_type, line_type, target_point_idx, new_coords, cross_section_x=None):  # type: ignore
+#             self.event_type = event_type
+#             self.line_type = line_type
+#             self.target_point_idx = target_point_idx
+#             self.new_coords = new_coords
+#             self.cross_section_x = cross_section_x
 
 class MultiSegmentShipEditorInterface:
     """
