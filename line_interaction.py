@@ -3,36 +3,18 @@
 Multi-segment Ship Lines Editor with hull_interface compatibility
 Receives three types of lines from Hull2DLineData, supports interactive adjustment
 """
+
 # pyright: reportMissingTypeStubs=false
 # pyright: reportUnknownMemberType=false
+# pyright: reportGeneralTypeIssues=false
 
 from hull_interface import Hull2DLineData, InteractionEvent
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from scipy.interpolate import CubicSpline
-# import matplotlib
-# from typing import List, Tuple, Optional, Dict
-
-# Import interface definitions
-# try:
-#     from hull_interface import Hull2DLineData, InteractionEvent
-# except ImportError:
-#     # Fallback definitions if import fails
-#     class Hull2DLineData:
-#         def __init__(self, side_profile=None, half_breadth=None, cross_sections=None, line_version=1):  # type: ignore
-#             self.side_profile = side_profile or []
-#             self.half_breadth = half_breadth or []
-#             self.cross_sections = cross_sections or {}
-#             self.line_version = line_version
-
-#     class InteractionEvent:
-#         def __init__(self, event_type, line_type, target_point_idx, new_coords, cross_section_x=None):  # type: ignore
-#             self.event_type = event_type
-#             self.line_type = line_type
-#             self.target_point_idx = target_point_idx
-#             self.new_coords = new_coords
-#             self.cross_section_x = cross_section_x
+from typing import List, Tuple, Optional, Dict, Any, Union
+import numbers
 
 class MultiSegmentShipEditorInterface:
     """
@@ -75,28 +57,28 @@ class MultiSegmentShipEditorInterface:
         self.current_cross_section_x = None
         
         # Axis limits
-        self.side_x_limits = (-1, 13)
-        self.side_y_limits = (-0.5, 4)
-        self.half_x_limits = (-1, 13)
-        self.half_y_limits = (-0.5, 3)
-        self.cross_x_limits = (-3, 3)
-        self.cross_y_limits = (-0.5, 4)
+        self.side_x_limits: Tuple[float, float] = (-1, 13)
+        self.side_y_limits: Tuple[float, float] = (-0.5, 4)
+        self.half_x_limits: Tuple[float, float] = (-1, 13)
+        self.half_y_limits: Tuple[float, float] = (-0.5, 3)
+        self.cross_x_limits: Tuple[float, float] = (-3, 3)
+        self.cross_y_limits: Tuple[float, float] = (-0.5, 4)
         
         # Control point styling
         self.control_point_radius = 0.06
-        self.curve_colors = {
+        self.curve_colors: Dict[str, str] = {
             'side_profile': '#3498db',    # Blue
             'half_breadth': '#2ecc71',    # Green
             'cross_section': '#9b59b6'    # Purple
         }
         
         # Interaction event recording
-        self.interaction_events = []
+        self.interaction_events: List[InteractionEvent] = []
         
         print("Multi-segment Ship Lines Editor initialized")
-        print(f"Side profile points: {len(hull_2d_data.side_profile)}") # type: ignore
-        print(f"Half-breadth points: {len(hull_2d_data.half_breadth)}") # type: ignore
-        print(f"Cross sections: {len(hull_2d_data.cross_sections)}")    # type: ignore
+        print(f"Side profile points: {len(hull_2d_data.side_profile)}")
+        print(f"Half-breadth points: {len(hull_2d_data.half_breadth)}")
+        print(f"Cross sections: {len(hull_2d_data.cross_sections)}")
         
         # Initial drawing
         self.initialize_curves()
@@ -108,7 +90,7 @@ class MultiSegmentShipEditorInterface:
         # Set up plot properties
         self.setup_plots()
     
-    def initialize_curves(self):
+    def initialize_curves(self) -> None:
         """Initialize curve data"""
         # Create default data if empty
         if not self.hull_2d_data.side_profile:
@@ -138,9 +120,9 @@ class MultiSegmentShipEditorInterface:
         
         # Set current cross section
         if self.hull_2d_data.cross_sections:
-            self.current_cross_section_x = list(self.hull_2d_data.cross_sections.keys())[0] # type: ignore
+            self.current_cross_section_x = list(self.hull_2d_data.cross_sections.keys())[0]
     
-    def generate_smooth_curve(self, points, is_closed=False):   # type: ignore
+    def generate_smooth_curve(self, points: List[Tuple[float, float]], is_closed: bool = False) -> List[Tuple[float, float]]:
         """Generate smooth curve"""
         if len(points) < 2:
             return points
@@ -150,7 +132,7 @@ class MultiSegmentShipEditorInterface:
         else:
             return self._generate_open_curve(points)
     
-    def _generate_open_curve(self, points):
+    def _generate_open_curve(self, points: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
         """Generate open smooth curve"""
         x_control = [p[0] for p in points]
         y_control = [p[1] for p in points]
@@ -171,12 +153,17 @@ class MultiSegmentShipEditorInterface:
             cs = CubicSpline(x_unique, y_unique, bc_type='natural')
             x_curve = np.linspace(min(x_unique), max(x_unique), 100)
             y_curve = cs(x_curve)
-            return list(zip(x_curve.tolist(), y_curve.tolist()))
+            
+            # 确保使用实数部分
+            x_curve_real = np.real(x_curve) if np.iscomplexobj(x_curve) else x_curve
+            y_curve_real = np.real(y_curve) if np.iscomplexobj(y_curve) else y_curve
+            # 使用列表推导式而不是直接使用numpy数组
+            return [(float(x), float(y)) for x, y in zip(x_curve_real, y_curve_real)]
         except Exception as e:
             print(f"Open curve interpolation failed: {e}")
             return self._linear_interpolation(points)
     
-    def _generate_closed_curve(self, points):
+    def _generate_closed_curve(self, points: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
         """Generate closed smooth curve"""
         if len(points) < 3:
             return points
@@ -200,12 +187,17 @@ class MultiSegmentShipEditorInterface:
             x_curve = cs_x(t_curve)
             y_curve = cs_y(t_curve)
             
-            return list(zip(x_curve.tolist(), y_curve.tolist()))
+            # 确保使用实数部分
+            x_curve_real = np.real(x_curve) if np.iscomplexobj(x_curve) else x_curve
+            y_curve_real = np.real(y_curve) if np.iscomplexobj(y_curve) else y_curve
+        
+            # 使用列表推导式而不是直接使用numpy数组
+            return [(float(x), float(y)) for x, y in zip(x_curve_real, y_curve_real)]
         except Exception as e:
             print(f"Closed curve interpolation failed: {e}")
             return self._linear_interpolation_closed(points)
     
-    def _linear_interpolation(self, points):
+    def _linear_interpolation(self, points: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
         """Linear interpolation fallback"""
         if len(points) < 2:
             return points
@@ -218,7 +210,7 @@ class MultiSegmentShipEditorInterface:
         
         return list(zip(x_curve.tolist(), y_curve.tolist()))
     
-    def _linear_interpolation_closed(self, points):
+    def _linear_interpolation_closed(self, points: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
         """Closed curve linear interpolation fallback"""
         if len(points) < 3:
             return points
@@ -228,7 +220,7 @@ class MultiSegmentShipEditorInterface:
             abs(points[0][1] - points[-1][1]) > 1e-10):
             points = points + [points[0]]
         
-        result = []
+        result: List[Tuple[float, float]] = []
         for i in range(len(points)-1):
             x1, y1 = points[i]
             x2, y2 = points[i+1]
@@ -241,7 +233,7 @@ class MultiSegmentShipEditorInterface:
         
         return result
     
-    def create_circle_patch(self, x, y, line_type):
+    def create_circle_patch(self, x: float, y: float, line_type: str) -> Circle:
         """Create circle patch"""
         circle = Circle(
             (x, y), self.control_point_radius,
@@ -265,7 +257,7 @@ class MultiSegmentShipEditorInterface:
         self.draw_cross_section()
         self.update_info_panel()
     
-    def draw_side_profile(self):
+    def draw_side_profile(self) -> None:
         """Draw side profile"""
         # Clear previous elements
         for circle in self.control_circles['side_profile']:
@@ -299,7 +291,7 @@ class MultiSegmentShipEditorInterface:
             self.ax_side.add_patch(circle)
             self.control_circles['side_profile'].append(circle)
     
-    def draw_half_breadth(self):
+    def draw_half_breadth(self) -> None:
         """Draw half-breadth diagram"""
         # Clear previous elements
         for circle in self.control_circles['half_breadth']:
@@ -333,7 +325,7 @@ class MultiSegmentShipEditorInterface:
             self.ax_half.add_patch(circle)
             self.control_circles['half_breadth'].append(circle)
     
-    def draw_cross_section(self):
+    def draw_cross_section(self) -> None:
         """Draw cross section"""
         # Clear previous elements
         for circle in self.control_circles['cross_section']:
@@ -345,6 +337,11 @@ class MultiSegmentShipEditorInterface:
         self.curve_lines['cross_section'].clear()
         
         if self.current_cross_section_x is None:
+            return
+        
+         # Safe dictionary access with type checking
+        cross_section_key = self.current_cross_section_x
+        if cross_section_key not in self.hull_2d_data.cross_sections:
             return
         
         cross_points = self.hull_2d_data.cross_sections.get(self.current_cross_section_x, [])
@@ -457,13 +454,13 @@ class MultiSegmentShipEditorInterface:
         
         plt.tight_layout()
     
-    def connect_events(self):
+    def connect_events(self) -> None:
         """Bind event handlers"""
         self.fig.canvas.mpl_connect('button_press_event', self.on_press)
         self.fig.canvas.mpl_connect('motion_notify_event', self.on_drag)
         self.fig.canvas.mpl_connect('button_release_event', self.on_release)
     
-    def on_press(self, event):
+    def on_press(self, event) -> None:
         """Mouse press event"""
         if event.button != 1 or not event.inaxes:
             return
@@ -472,8 +469,7 @@ class MultiSegmentShipEditorInterface:
         for line_type in ['side_profile', 'half_breadth', 'cross_section']:
             for i, circle in enumerate(self.control_circles[line_type]):
                 center = circle.center
-                distance = np.sqrt((event.xdata - center[0])**2 + 
-                                 (event.ydata - center[1])**2)
+                distance = np.sqrt((event.xdata - center[0])**2 + (event.ydata - center[1])**2)
                 
                 if distance <= self.control_point_radius * 1.5:
                     self.dragging = True
@@ -498,10 +494,20 @@ class MultiSegmentShipEditorInterface:
                     print(f"Started dragging {line_type} control point {i}")
                     return
     
-    def on_drag(self, event):
+    def on_drag(self, event: Any) -> None:
         """Mouse drag event"""
         if not self.dragging or self.dragged_idx is None or not event.inaxes:
             return
+        
+        if event.xdata is None or event.ydata is None:
+            return
+        
+        # 确保dragged_line_type是字符串
+        if self.dragged_line_type is None:
+            return
+        
+        # 使用局部变量确保类型安全
+        line_type: str = self.dragged_line_type
         
         # Get new coordinates
         if self.dragged_line_type == 'side_profile':
@@ -515,18 +521,21 @@ class MultiSegmentShipEditorInterface:
         else:  # cross_section
             new_x = max(self.cross_x_limits[0], min(self.cross_x_limits[1], event.xdata))
             new_y = max(self.cross_y_limits[0], min(self.cross_y_limits[1], event.ydata))
-            points = self.hull_2d_data.cross_sections.get(self.dragged_cross_section_x, [])
+            if self.dragged_cross_section_x is not None:
+                points = self.hull_2d_data.cross_sections.get(self.dragged_cross_section_x, [])
+            else:
+                points = []
         
         # Update control point position
         if self.dragged_idx < len(points):
             points[self.dragged_idx] = (new_x, new_y)
             
             # Update control point display
-            circle = self.control_circles[self.dragged_line_type][self.dragged_idx]
+            circle = self.control_circles[line_type][self.dragged_idx]
             circle.center = (new_x, new_y)
             
             # Update curve
-            self.update_curve_only(self.dragged_line_type)
+            self.update_curve_only(line_type)
             
             # Record interaction event
             interaction_event = InteractionEvent(
@@ -538,21 +547,27 @@ class MultiSegmentShipEditorInterface:
             )
             self.interaction_events.append(interaction_event)
     
-    def on_release(self, event):
+    def on_release(self, event: Any) -> None:
         """Mouse release event"""
-        if self.dragging and self.dragged_idx is not None:
+        if self.dragging and self.dragged_idx is not None and self.dragged_line_type is not None:
+            # 确保line_type是字符串类型
+            line_type: str = self.dragged_line_type
+            
             # Record interaction event
-            if self.dragged_line_type == 'side_profile':
+            if line_type == 'side_profile':
                 points = self.hull_2d_data.side_profile
-            elif self.dragged_line_type == 'half_breadth':
+            elif line_type == 'half_breadth':
                 points = self.hull_2d_data.half_breadth
             else:  # cross_section
-                points = self.hull_2d_data.cross_sections.get(self.dragged_cross_section_x, [])
+                if self.dragged_cross_section_x is not None:
+                    points = self.hull_2d_data.cross_sections.get(self.dragged_cross_section_x, [])
+                else:
+                    points = []
             
             if self.dragged_idx < len(points):
                 interaction_event = InteractionEvent(
                     event_type="drag_end",
-                    line_type=self.dragged_line_type,
+                    line_type=line_type,
                     target_point_idx=self.dragged_idx,
                     new_coords=points[self.dragged_idx],
                     cross_section_x=self.dragged_cross_section_x
@@ -562,7 +577,10 @@ class MultiSegmentShipEditorInterface:
                 # Update data version
                 self.hull_2d_data.line_version += 1
             
-            print(f"Finished dragging {self.dragged_line_type} control point {self.dragged_idx}")
+            print(f"Finished dragging {line_type} control point {self.dragged_idx}")
+            
+            # Update curve
+            self.update_curve_only(line_type)  # 使用line_type而不是self.dragged_line_type
             
             # Reset colors
             self.reset_control_colors()
@@ -575,7 +593,7 @@ class MultiSegmentShipEditorInterface:
         self.dragged_line_type = None
         self.dragged_cross_section_x = None
     
-    def highlight_control_point(self, index, line_type):
+    def highlight_control_point(self, index: int, line_type: str) -> None:
         """Highlight selected control point"""
         for lt in ['side_profile', 'half_breadth', 'cross_section']:
             for i, circle in enumerate(self.control_circles[lt]):
@@ -592,7 +610,7 @@ class MultiSegmentShipEditorInterface:
         
         self.fig.canvas.draw_idle()
     
-    def reset_control_colors(self):
+    def reset_control_colors(self) -> None:
         """Reset all control point colors"""
         for line_type in ['side_profile', 'half_breadth', 'cross_section']:
             for circle in self.control_circles[line_type]:
@@ -603,7 +621,7 @@ class MultiSegmentShipEditorInterface:
         
         self.fig.canvas.draw_idle()
     
-    def update_curve_only(self, line_type):
+    def update_curve_only(self, line_type: str) -> None:
         """Update only the specified curve type"""
         if line_type == 'side_profile':
             curve_points = self.generate_smooth_curve(self.hull_2d_data.side_profile, False)
@@ -629,15 +647,15 @@ class MultiSegmentShipEditorInterface:
         
         self.fig.canvas.draw_idle()
     
-    def get_interaction_events(self):
+    def get_interaction_events(self) -> List[InteractionEvent]:
         """Get all interaction events"""
         return self.interaction_events.copy()
     
-    def get_updated_hull_data(self):
+    def get_updated_hull_data(self) -> Hull2DLineData:
         """Get updated Hull2DLineData"""
         return self.hull_2d_data
     
-    def show(self):
+    def show(self) -> None:
         """Show editor"""
         plt.tight_layout()
         plt.show()
