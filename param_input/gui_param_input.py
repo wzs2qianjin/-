@@ -1,10 +1,10 @@
 # gui_param_input.py
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 import sys
-from ui_param_input import Ui_MainWindow
-from hull_interface import HullBasicParams, ParamCheckResult
+from param_input.ui_param_input import Ui_MainWindow
+from core. hull_interface import HullBasicParams, ParamCheckResult
 
 # 全局变量：存储验证通过的参数
 GLOBAL_VALID_PARAMS = None
@@ -70,6 +70,7 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         self.init_ui_state()  # 初始化UI状态
         self.bind_events()  # 绑定交互事件
         self._set_input_filter()  # 设置输入过滤
+        self._install_event_filters()  # 安装事件过滤器
 
     def init_ui_state(self):
         """初始化UI状态：清空输入框和状态栏"""
@@ -81,9 +82,15 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         self.statusBar().showMessage("请输入船体参数并点击确定")
 
     def bind_events(self):
-        """绑定按钮点击事件"""
+        """绑定所有交互事件"""
+        # 按钮事件
         self.btn_confirm.clicked.connect(self.on_confirm_click)
         self.btn_reset.clicked.connect(self.on_reset_click)
+
+        # 输入框文本变化事件（实时验证）
+        input_edits = [self.le_lpp, self.le_b, self.le_d, self.le_t, self.le_delta]
+        for edit in input_edits:
+            edit.textChanged.connect(self.on_text_changed)
 
     def _set_input_filter(self):
         """设置输入框过滤器：仅允许数字和小数点"""
@@ -96,6 +103,57 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
             edit.setValidator(float_validator)
             # 设置输入框对齐方式为右对齐（数字输入习惯）
             edit.setAlignment(Qt.AlignRight)
+
+    def _install_event_filters(self):
+        """为输入框安装事件过滤器（处理焦点事件）"""
+        input_edits = [self.le_lpp, self.le_b, self.le_d, self.le_t, self.le_delta]
+        for edit in input_edits:
+            edit.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        """事件过滤器：处理输入框焦点提示"""
+        if event.type() == QEvent.FocusIn:
+            # 焦点进入时显示参数说明
+            param_hints = {
+                self.le_lpp: "垂线间长（Lpp）：船舶首垂线与尾垂线之间的水平距离，必须大于0",
+                self.le_b: "船宽（B）：船舶最大横向宽度，必须>0且小于垂线间长",
+                self.le_d: "型深（D）：船底基线到甲板边线的垂直距离，必须>0且小于垂线间长",
+                self.le_t: "吃水（T）：船底基线到水面的垂直距离，必须>0且小于型深",
+                self.le_delta: "排水量（Delta）：船舶排开水的重量，单位为吨，必须大于0"
+            }
+            if obj in param_hints:
+                self.statusBar().showMessage(param_hints[obj])
+        elif event.type() == QEvent.FocusOut:
+            # 焦点离开时恢复默认提示（如果输入为空）
+            if not obj.text().strip():
+                self.statusBar().showMessage("请输入船体参数并点击确定")
+        return super().eventFilter(obj, event)
+
+    def on_text_changed(self):
+        """处理输入框文本变化：实时检查输入有效性"""
+        sender = self.sender()  # 获取触发事件的输入框
+        text = sender.text().strip()
+
+        if not text:
+            # 空输入提示（必填项）
+            self.statusBar().showMessage(f"{self._get_param_name(sender)}为必填项，请输入有效值")
+        elif text == ".":
+            # 不完整的小数输入提示
+            self.statusBar().showMessage(f"{self._get_param_name(sender)}输入不完整，请补充数字")
+        else:
+            # 有效输入提示
+            self.statusBar().showMessage(f"{self._get_param_name(sender)}输入有效")
+
+    def _get_param_name(self, edit):
+        """获取输入框对应的参数名称"""
+        param_names = {
+            self.le_lpp: "垂线间长（Lpp）",
+            self.le_b: "船宽（B）",
+            self.le_d: "型深（D）",
+            self.le_t: "吃水（T）",
+            self.le_delta: "排水量（Delta）"
+        }
+        return param_names.get(edit, "参数")
 
     def on_confirm_click(self):
         """处理确定按钮点击事件：获取输入→校验→反馈结果"""
