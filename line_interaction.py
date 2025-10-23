@@ -13,8 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from scipy.interpolate import CubicSpline
-from typing import List, Tuple, Optional, Dict, Any, Union
-import numbers
+from typing import List, Tuple, Dict, Any
 
 class MultiSegmentShipEditorInterface:
     """
