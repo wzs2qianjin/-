@@ -1,4 +1,4 @@
-# multi_segment_ship_editor_interface.py
+# 模块4文件名:multi_segment_ship_editor_interface.py
 """
 多段式船体型线编辑器,兼容hull_interface接口
 接收来自Hull2DLineData的三种类型型线,支持交互式调整
