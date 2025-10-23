@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
+        "azim",
         "boxstyle",
+        "centralwidget",
         "darkorange",
         "edgecolor",
         "facecolor",
@@ -11,9 +13,12 @@
         "interp",
         "iscomplexobj",
         "matplotlib",
+        "mplot",
         "numpy",
+        "pyuic",
         "scipy",
         "suptitle",
+        "toolkits",
         "verticalalignment",
         "xdata",
         "xlabel",
@@ -22,7 +27,13 @@
         "ydata",
         "ylabel",
         "ylim",
-        "yticks"
+        "yticks",
+        "zlabel",
+        "zlim",
+        "zorder"
+    ],
+    "python.analysis.extraPaths": [
+        "./stubs"
     ],
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticSeverityOverrides": {

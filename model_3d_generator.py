@@ -1,4 +1,4 @@
-# 模块文件名:model_3d_generator.py
+# 模块5文件名:model_3d_generator.py
 from hull_interface import HullBasicParams, Hull2DLineData, Hull3DWireframeData
 import numpy as np
 from typing import List, Tuple, Protocol
