@@ -1,4 +1,4 @@
-# hull_interface.py
+# 接口模块:hull_interface.py
 from dataclasses import dataclass
 from typing import List, Tuple, Optional
 
