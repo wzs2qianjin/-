@@ -27,6 +27,9 @@
         "yticks",
         "zorder"
     ],
+    "python.analysis.extraPaths": [
+        "./stubs"
+    ],
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticSeverityOverrides": {
         "reportUnknownArgumentType": "none",
