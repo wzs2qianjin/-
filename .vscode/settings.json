@@ -13,6 +13,7 @@
         "iscomplexobj",
         "matplotlib",
         "numpy",
+        "pyuic",
         "scipy",
         "suptitle",
         "verticalalignment",
