@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "azim",
         "boxstyle",
         "centralwidget",
         "darkorange",
@@ -12,10 +13,12 @@
         "interp",
         "iscomplexobj",
         "matplotlib",
+        "mplot",
         "numpy",
         "pyuic",
         "scipy",
         "suptitle",
+        "toolkits",
         "verticalalignment",
         "xdata",
         "xlabel",
@@ -25,6 +28,8 @@
         "ylabel",
         "ylim",
         "yticks",
+        "zlabel",
+        "zlim",
         "zorder"
     ],
     "python.analysis.extraPaths": [
