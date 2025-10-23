@@ -1,7 +1,7 @@
 # multi_segment_ship_editor_interface.py
 """
-多段式船体型线编辑器，兼容hull_interface接口
-接收来自Hull2DLineData的三种类型型线，支持交互式调整
+多段式船体型线编辑器,兼容hull_interface接口
+接收来自Hull2DLineData的三种类型型线,支持交互式调整
 """
 
 # pyright: reportMissingTypeStubs=false
@@ -18,7 +18,7 @@ import numbers
 
 class MultiSegmentShipEditorInterface:
     """
-    多段式船体型线编辑器，兼容hull_interface接口
+    多段式船体型线编辑器,兼容hull_interface接口
     支持三种类型型线的交互式调整：
     - 侧面轮廓线 (Side Profile)
     - 半宽图 (Half-Breadth)  
@@ -95,7 +95,7 @@ class MultiSegmentShipEditorInterface:
     
     def initialize_curves(self) -> None:
         """初始化曲线数据"""
-        # 如果数据为空，创建默认数据
+        # 如果数据为空,创建默认数据
         if not self.hull_2d_data.side_profile:
             # 默认侧面轮廓线控制点（船体侧面形状）
             self.hull_2d_data.side_profile = [
@@ -427,7 +427,7 @@ class MultiSegmentShipEditorInterface:
             "• Interaction events are automatically recorded"
         ])
         
-        # 在信息面板中显示文本，调整位置避免重叠
+        # 在信息面板中显示文本,调整位置避免重叠
         self.ax_info.text(0.05, 0.95, "\n".join(info_text), 
                          transform=self.ax_info.transAxes,  # 使用相对坐标
                          fontsize=9,                       # 减小字体大小
@@ -448,7 +448,7 @@ class MultiSegmentShipEditorInterface:
         self.ax_side.set_ylabel('Depth Direction (m)', fontsize=12)
         self.ax_side.set_title('Side Profile', fontsize=14, fontweight='bold')
         self.ax_side.grid(True, alpha=0.3)  # 显示网格
-        self.ax_side.legend(fontsize=10, loc='upper right')    # 显示图例，调整位置
+        self.ax_side.legend(fontsize=10, loc='upper right')    # 显示图例,调整位置
         self.ax_side.set_aspect('equal')    # 设置等比例显示
         self.ax_side.set_xlim(self.side_x_limits[0], self.side_x_limits[1])
         self.ax_side.set_ylim(self.side_y_limits[0], self.side_y_limits[1])
@@ -480,7 +480,7 @@ class MultiSegmentShipEditorInterface:
         self.fig.suptitle('Ship Lines Interactive Editor - hull_interface Compatible', 
                          fontsize=16, fontweight='bold', y=0.98)  # 调整标题位置
         
-        # 调整布局，增加子图间距
+        # 调整布局,增加子图间距
         plt.tight_layout(rect=[0, 0, 1, 0.96])  # 为顶部标题留出空间
     
     def connect_events(self) -> None:
@@ -501,14 +501,14 @@ class MultiSegmentShipEditorInterface:
                 # 计算鼠标位置与控制点的距离
                 distance = np.sqrt((event.xdata - center[0])**2 + (event.ydata - center[1])**2)
                 
-                # 如果距离在控制点半径1.5倍范围内，认为选中了该控制点
-                # 所有控制点使用相同的半径，确保选取范围一致
+                # 如果距离在控制点半径1.5倍范围内,认为选中了该控制点
+                # 所有控制点使用相同的半径,确保选取范围一致
                 if distance <= self.control_point_radius * 1.5:
                     self.dragging = True           # 设置拖拽状态
                     self.dragged_idx = i           # 记录拖拽的控制点索引
                     self.dragged_line_type = line_type  # 记录拖拽的线类型
                     
-                    # 如果是横剖面，记录当前横剖面的x坐标
+                    # 如果是横剖面,记录当前横剖面的x坐标
                     if line_type == 'cross_section':
                         self.dragged_cross_section_x = self.current_cross_section_x
                     
@@ -700,6 +700,6 @@ class MultiSegmentShipEditorInterface:
     
     def show(self) -> None:
         """显示编辑器界面"""
-        # 调整布局，增加子图间距
+        # 调整布局,增加子图间距
         plt.tight_layout(rect=[0, 0, 1, 0.96])  # 为顶部标题留出空间
         plt.show()          # 显示图形窗口
