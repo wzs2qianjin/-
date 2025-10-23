@@ -1,8 +1,7 @@
-# gui_param_input.py
+# 模块1文件名:gui_param_input.py
 from hull_interface import HullBasicParams, ParamCheckResult
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QRegExp
+from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtGui import QRegExpValidator
 from ui_param_input import Ui_MainWindow
 import sys
@@ -98,7 +97,7 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         for edit in input_edits:
             edit.setValidator(float_validator)
             # 设置输入框对齐方式为右对齐(数字输入习惯)
-            edit.setAlignment(Qt.AlignRight)
+            edit.setAlignment(Qt.AlignRight)    # type: ignore
 
     def on_confirm_click(self):
         """处理确定按钮点击事件:获取输入→校验→反馈结果"""
