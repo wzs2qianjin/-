@@ -1,19 +1,20 @@
 # gui_param_input.py
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import Qt
-import sys
-from ui_param_input import Ui_MainWindow
 from hull_interface import HullBasicParams, ParamCheckResult
+from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
+from ui_param_input import Ui_MainWindow
+import sys
 
-# 全局变量：存储验证通过的参数
-GLOBAL_VALID_PARAMS = None
+# 全局变量:存储验证通过的参数
+GLOBAL_VALID_PARAMS: HullBasicParams | None = None
 
 
 def check_hull_params(params: HullBasicParams) -> ParamCheckResult:
-    """船体参数校验逻辑（适配HullBasicParams结构）"""
+    """船体参数校验逻辑(适配HullBasicParams结构)"""
     errors = []
-    # 基础参数非空校验（Lpp、B、D、T、Delta为必填项）
+    # 基础参数非空校验(Lpp、B、D、T、Delta为必填项)
     if not all([params.Lpp, params.B, params.D, params.T, params.Delta]):
         errors.append("垂线间长、船宽、型深、吃水、排水量为必填项")
 
@@ -28,25 +29,25 @@ def check_hull_params(params: HullBasicParams) -> ParamCheckResult:
 
         # 数值范围校验
         if lpp <= 0:
-            errors.append("垂线间长（Lpp）必须大于0")
+            errors.append("垂线间长(Lpp)必须大于0")
         if b <= 0 or b >= lpp:
-            errors.append("船宽（B）必须>0且<垂线间长（Lpp）")
+            errors.append("船宽(B)必须>0且<垂线间长(Lpp)")
         if d <= 0 or d >= lpp:
-            errors.append("型深（D）必须>0且<垂线间长（Lpp）")
+            errors.append("型深(D)必须>0且<垂线间长(Lpp)")
         if t <= 0 or t >= d:
-            errors.append("吃水（T）必须>0且<型深（D）")
+            errors.append("吃水(T)必须>0且<型深(D)")
         if delta <= 0:
-            errors.append("排水量（Delta）必须>0")
+            errors.append("排水量(Delta)必须>0")
         if loa is not None and (loa <= 0 or loa < lpp):
-            errors.append("总长（Loa）必须>0且≥垂线间长（Lpp）（若填写）")
+            errors.append("总长(Loa)必须>0且≥垂线间长(Lpp)(若填写)")
     except ValueError:
-        errors.append("输入必须为有效数字（整数或小数）")
+        errors.append("输入必须为有效数字(整数或小数)")
 
     # 构造校验结果
     if errors:
         return ParamCheckResult(
             is_valid=False,
-            error_msg="；".join(errors),
+            error_msg=":".join(errors),
             valid_params=None
         )
     return ParamCheckResult(
@@ -60,7 +61,7 @@ def save_valid_params(valid_params: HullBasicParams) -> None:
     """存储验证通过的参数到全局变量"""
     global GLOBAL_VALID_PARAMS
     GLOBAL_VALID_PARAMS = valid_params
-    print(f"已存储有效参数：{valid_params}")
+    print(f"已存储有效参数:{valid_params}")
 
 
 class ParamInputLogic(QMainWindow, Ui_MainWindow):
@@ -72,13 +73,15 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         self._set_input_filter()  # 设置输入过滤
 
     def init_ui_state(self):
-        """初始化UI状态：清空输入框和状态栏"""
+        """初始化UI状态:清空输入框和状态栏"""
         self.le_lpp.clear()
         self.le_b.clear()
         self.le_d.clear()
         self.le_t.clear()
         self.le_delta.clear()
-        self.statusBar().showMessage("请输入船体参数并点击确定")
+        status_bar = self.statusBar()
+        if status_bar:  # 添加空值检查
+            status_bar.showMessage("请输入船体参数并点击确定")
 
     def bind_events(self):
         """绑定按钮点击事件"""
@@ -86,27 +89,27 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         self.btn_reset.clicked.connect(self.on_reset_click)
 
     def _set_input_filter(self):
-        """设置输入框过滤器：仅允许数字和小数点"""
-        # 正则表达式：允许非负整数或小数（支持整数部分、可选小数部分）
-        float_reg = QtCore.QRegExp(r"^[0-9]+(\.[0-9]*)?$")
-        float_validator = QtGui.QRegExpValidator(float_reg, self)
+        """设置输入框过滤器:仅允许数字和小数点"""
+        # 正则表达式:允许非负整数或小数(支持整数部分、可选小数部分)
+        float_reg = QRegExp(r"^[0-9]+(\.[0-9]*)?$")
+        float_validator = QRegExpValidator(float_reg, self)
         # 为所有参数输入框应用过滤器
         input_edits = [self.le_lpp, self.le_b, self.le_d, self.le_t, self.le_delta]
         for edit in input_edits:
             edit.setValidator(float_validator)
-            # 设置输入框对齐方式为右对齐（数字输入习惯）
+            # 设置输入框对齐方式为右对齐(数字输入习惯)
             edit.setAlignment(Qt.AlignRight)
 
     def on_confirm_click(self):
-        """处理确定按钮点击事件：获取输入→校验→反馈结果"""
-        # 获取输入框内容（去除首尾空格）
+        """处理确定按钮点击事件:获取输入→校验→反馈结果"""
+        # 获取输入框内容(去除首尾空格)
         lpp = self.le_lpp.text().strip()
         b = self.le_b.text().strip()
         d = self.le_d.text().strip()
         t = self.le_t.text().strip()
         delta = self.le_delta.text().strip()
 
-        # 构造船体基本参数对象（Loa暂未提供输入框，设为None）
+        # 构造船体基本参数对象(Loa暂未提供输入框，设为None)
         params = HullBasicParams(
             Lpp=lpp,
             B=b,
@@ -121,28 +124,33 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
 
         # 处理校验结果
         if check_result.is_valid:
-            # 校验通过：保存参数并显示成功信息
-            save_valid_params(check_result.valid_params)
-            self.statusBar().showMessage("参数验证通过，已保存")
+            # 校验通过:保存参数并显示成功信息
+            if check_result.valid_params:  # 添加空值检查
+                save_valid_params(check_result.valid_params)
+            status_bar = self.statusBar()
+            if status_bar:  # 添加空值检查
+                status_bar.showMessage("参数验证通过，已保存")
             QMessageBox.information(
                 self, "成功",
-                f"参数验证通过：\n"
-                f"垂线间长：{lpp}m\n"
-                f"船宽：{b}m\n"
-                f"型深：{d}m\n"
-                f"吃水：{t}m\n"
-                f"排水量：{delta}t"
+                f"参数验证通过:\n"
+                f"垂线间长:{lpp}m\n"
+                f"船宽:{b}m\n"
+                f"型深:{d}m\n"
+                f"吃水:{t}m\n"
+                f"排水量:{delta}t"
             )
         else:
-            # 校验失败：显示错误信息
-            self.statusBar().showMessage("参数验证失败，请检查输入")
+            # 校验失败:显示错误信息
+            status_bar = self.statusBar()
+            if status_bar:  # 添加空值检查
+                status_bar.showMessage("参数验证失败，请检查输入")
             QMessageBox.critical(
                 self, "输入错误",
-                f"参数验证失败：\n{check_result.error_msg}"
+                f"参数验证失败:\n{check_result.error_msg}"
             )
 
     def on_reset_click(self):
-        """处理重置按钮点击事件：清空所有输入"""
+        """处理重置按钮点击事件:清空所有输入"""
         self.init_ui_state()
 
 
