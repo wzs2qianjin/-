@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "boxstyle",
+        "centralwidget",
         "darkorange",
         "edgecolor",
         "facecolor",
@@ -22,7 +23,8 @@
         "ydata",
         "ylabel",
         "ylim",
-        "yticks"
+        "yticks",
+        "zorder"
     ],
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticSeverityOverrides": {
