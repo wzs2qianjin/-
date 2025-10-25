@@ -1,0 +1,170 @@
+{
+  "metadata": {
+    "export_time": "2025-10-25T20:06:17.455342",
+    "version": "1.0",
+    "system": "船舶性能分析系统"
+  },
+  "basic_parameters": {
+    "Lpp": 145.0,
+    "B": 25.0,
+    "D": 15.0,
+    "T": 9.0,
+    "Delta": 25112.5,
+    "Loa": 150.0,
+    "param_source": "用户输入"
+  },
+  "hull_coefficients": {
+    "Cb": 0.75,
+    "Cp": 0.78,
+    "Cw": 0.85,
+    "Cm": 0.98,
+    "coeff_version": 1
+  },
+  "hydrostatic_data": {
+    "displacement_volume": 24500.0,
+    "LCB": 72.5,
+    "VCB": 4.8,
+    "TPC": 25.8,
+    "BM": 8.2,
+    "hydro_version": 1
+  },
+  "resistance_data": {
+    "speed_list": [
+      10.0,
+      12.0,
+      14.0,
+      16.0,
+      18.0
+    ],
+    "total_resistance_list": [
+      185.5,
+      265.8,
+      385.2,
+      558.7,
+      785.3
+    ],
+    "effective_power_list": [
+      954.2,
+      1632.1,
+      2698.4,
+      4289.6,
+      6478.1
+    ],
+    "method": "Holtrop-Mennen"
+  },
+  "stability_data": {
+    "hydro_curve": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        2.0,
+        5200.0
+      ],
+      [
+        4.0,
+        11200.0
+      ],
+      [
+        6.0,
+        16800.0
+      ],
+      [
+        8.0,
+        21500.0
+      ],
+      [
+        9.0,
+        24500.0
+      ]
+    ],
+    "gz_curve": [
+      [
+        0,
+        0.0
+      ],
+      [
+        5,
+        0.45
+      ],
+      [
+        10,
+        0.92
+      ],
+      [
+        15,
+        1.38
+      ],
+      [
+        20,
+        1.75
+      ],
+      [
+        25,
+        1.95
+      ],
+      [
+        30,
+        1.98
+      ],
+      [
+        35,
+        1.85
+      ]
+    ],
+    "loading_condition": "满载"
+  },
+  "cargo_data": [
+    {
+      "hold_name": "No.1 货舱",
+      "hold_position": [
+        20.0,
+        45.0,
+        -8.0,
+        8.0
+      ],
+      "hold_volume": 4500.0
+    },
+    {
+      "hold_name": "No.2 货舱",
+      "hold_position": [
+        45.0,
+        73.0,
+        -8.0,
+        8.0
+      ],
+      "hold_volume": 5200.0
+    },
+    {
+      "hold_name": "No.3 货舱",
+      "hold_position": [
+        73.0,
+        103.0,
+        -8.0,
+        8.0
+      ],
+      "hold_volume": 5800.0
+    },
+    {
+      "hold_name": "No.4 货舱",
+      "hold_position": [
+        103.0,
+        132.0,
+        -8.0,
+        8.0
+      ],
+      "hold_volume": 5600.0
+    },
+    {
+      "hold_name": "No.5 货舱",
+      "hold_position": [
+        132.0,
+        158.0,
+        -8.0,
+        8.0
+      ],
+      "hold_volume": 4800.0
+    }
+  ]
+}
