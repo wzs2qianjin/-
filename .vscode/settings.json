@@ -16,6 +16,7 @@
         "mplot",
         "numpy",
         "pyuic",
+        "qlineargradient",
         "scipy",
         "suptitle",
         "toolkits",
