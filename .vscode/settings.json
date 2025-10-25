@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "azim",
+        "Bivariate",
         "boxstyle",
         "centralwidget",
         "darkorange",
@@ -12,6 +13,7 @@
         "inaxes",
         "interp",
         "iscomplexobj",
+        "labelpad",
         "matplotlib",
         "mplot",
         "numpy",
@@ -21,14 +23,17 @@
         "suptitle",
         "toolkits",
         "verticalalignment",
+        "xaxis",
         "xdata",
         "xlabel",
         "xlim",
         "xticks",
+        "yaxis",
         "ydata",
         "ylabel",
         "ylim",
         "yticks",
+        "zaxis",
         "zlabel",
         "zlim",
         "zorder"
