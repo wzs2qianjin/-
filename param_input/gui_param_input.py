@@ -121,11 +121,11 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         if event.type() == QEvent.FocusIn: # type: ignore
             # 焦点进入时显示参数说明
             param_hints = {
-                self.le_lpp: "垂线间长(Lpp):船舶首垂线与尾垂线之间的水平距离，必须大于0",
-                self.le_b: "船宽(B):船舶最大横向宽度，必须>0且小于垂线间长",
-                self.le_d: "型深(D):船底基线到甲板边线的垂直距离，必须>0且小于垂线间长",
-                self.le_t: "吃水(T):船底基线到水面的垂直距离，必须>0且小于型深",
-                self.le_delta: "排水量(Delta):船舶排开水的重量，单位为吨，必须大于0"
+                self.le_lpp: "垂线间长(Lpp):船舶首垂线与尾垂线之间的水平距离,必须大于0",
+                self.le_b: "船宽(B):船舶最大横向宽度,必须>0且小于垂线间长",
+                self.le_d: "型深(D):船底基线到甲板边线的垂直距离,必须>0且小于垂线间长",
+                self.le_t: "吃水(T):船底基线到水面的垂直距离,必须>0且小于型深",
+                self.le_delta: "排水量(Delta):船舶排开水的重量,单位为吨,必须大于0"
             }
             if obj in param_hints:
                 self.update_status_message(param_hints[obj])
@@ -145,10 +145,10 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
 
         if not text:
             # 空输入提示(必填项)
-            self.update_status_message(f"{self._get_param_name(sender)}为必填项，请输入有效值")
+            self.update_status_message(f"{self._get_param_name(sender)}为必填项,请输入有效值")
         elif text == ".":
             # 不完整的小数输入提示
-            self.update_status_message(f"{self._get_param_name(sender)}输入不完整，请补充数字")
+            self.update_status_message(f"{self._get_param_name(sender)}输入不完整,请补充数字")
         else:
             # 有效输入提示
             self.update_status_message(f"{self._get_param_name(sender)}输入有效")
@@ -177,14 +177,14 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         t = self.le_t.text().strip()
         delta = self.le_delta.text().strip()
 
-        # 构造船体基本参数对象(Loa暂未提供输入框，设为None)
+        # 构造船体基本参数对象(Loa暂未提供输入框,设为None)
         params = HullBasicParams(
             Lpp=lpp,
             B=b,
             D=d,
             T=t,
             Delta=delta,
-            Loa=None  # UI中未包含总长输入框，暂不支持
+            Loa=None  # UI中未包含总长输入框,暂不支持
         )
 
         # 执行参数校验
@@ -194,7 +194,7 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
         if check_result.is_valid and check_result.valid_params is not None:
             # 校验通过:保存参数并显示成功信息
             save_valid_params(check_result.valid_params)
-            self.update_status_message("参数验证通过，已保存")
+            self.update_status_message("参数验证通过,已保存")
             QMessageBox.information(
                 self, "成功",
                 f"参数验证通过:\n"
@@ -206,7 +206,7 @@ class ParamInputLogic(QMainWindow, Ui_MainWindow):
             )
         else:
             # 校验失败:显示错误信息
-            self.update_status_message("参数验证失败，请检查输入")
+            self.update_status_message("参数验证失败,请检查输入")
             QMessageBox.critical(
                 self, "输入错误",
                 f"参数验证失败:\n{check_result.error_msg}"
