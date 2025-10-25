@@ -33,7 +33,8 @@
         "zorder"
     ],
     "python.analysis.extraPaths": [
-        "./stubs"
+        "./stubs",
+        "./core"
     ],
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticSeverityOverrides": {
