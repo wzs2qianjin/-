@@ -10,8 +10,8 @@ from PyQt5.QtWidgets import QGroupBox, QHBoxLayout, QVBoxLayout, QSpacerItem, QS
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)  # 保持原窗口大小，布局自动适配
-        MainWindow.setMinimumSize(700, 500)  # 设置最小窗口尺寸，避免挤压
+        MainWindow.resize(800, 600)  # 保持原窗口大小,布局自动适配
+        MainWindow.setMinimumSize(700, 500)  # 设置最小窗口尺寸,避免挤压
 
         # 中心部件与主布局(替代绝对坐标)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -33,13 +33,13 @@ class Ui_MainWindow(object):
         self.label_2.setText("<html><body><span style='font-size:10pt;'>船长(m)</span><span style='color:red;'>*</span></body></html>")
         self.label_2.setObjectName("label_2")
         self.label_2.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)  # type: ignore # 标签右对齐
-        self.label_2.setFixedWidth(80)  # 固定标签宽度，保证对齐
+        self.label_2.setFixedWidth(80)  # 固定标签宽度,保证对齐
 
         self.le_lpp = QtWidgets.QLineEdit(self.param_group)
         self.le_lpp.setObjectName("le_lpp")
         self.le_lpp.setPlaceholderText("示例:120.5")  # 输入提示
         self.le_lpp.setFixedWidth(150)  # 固定输入框宽度
-        self.le_lpp.setFixedHeight(30)  # 增加输入框高度，提升点击感
+        self.le_lpp.setFixedHeight(30)  # 增加输入框高度,提升点击感
 
         self.row_lpp.addWidget(self.label_2)
         self.row_lpp.addSpacing(10)  # 标签与输入框间距
@@ -156,13 +156,13 @@ class Ui_MainWindow(object):
 
         # ---------------------- 组装主布局 ----------------------
         self.main_layout.addWidget(self.param_group, stretch=1)  # 左侧占1份宽度
-        self.main_layout.addLayout(self.right_layout, stretch=5)  # 右侧占2份宽度(更宽，适合预览)
+        self.main_layout.addLayout(self.right_layout, stretch=5)  # 右侧占2份宽度(更宽,适合预览)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
-        # 菜单栏与状态栏(保留原结构，优化样式)
+        # 菜单栏与状态栏(保留原结构,优化样式)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 25))  # 增加菜单栏高度，提升点击感
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 25))  # 增加菜单栏高度,提升点击感
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 
@@ -179,12 +179,12 @@ class Ui_MainWindow(object):
     def set_style(self, MainWindow):
         """设置全局QSS样式"""
         style = """
-            /* 窗口背景:浅灰渐变，避免单调 */
+            /* 窗口背景:浅灰渐变,避免单调 */
             QMainWindow {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f5f7fa, stop:1 #e4e9f2);
             }
 
-            /* 参数分组框:白色背景+阴影，突出区域 */
+            /* 参数分组框:白色背景+阴影,突出区域 */
             QGroupBox {
                 font-size: 13pt;
                 font-weight: 600;
@@ -196,7 +196,7 @@ class Ui_MainWindow(object):
                 margin-top: 15px; /* 与标题间距 */
             }
 
-            /* 输入框:默认灰色边框，聚焦时蓝色高亮 */
+            /* 输入框:默认灰色边框,聚焦时蓝色高亮 */
             QLineEdit {
                 font-size: 10pt;
                 border: 1px solid #d0d6e0;
@@ -210,7 +210,7 @@ class Ui_MainWindow(object):
                 background-color: #f8fafc;
             }
 
-            /* 按钮:蓝白渐变，hover/点击有反馈 */
+            /* 按钮:蓝白渐变,hover/点击有反馈 */
             QPushButton {
                 font-size: 10pt;
                 font-weight: 500;
@@ -228,14 +228,14 @@ class Ui_MainWindow(object):
                 box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
             }
 
-            /* 右侧标题:浅灰底色，突出文字 */
+            /* 右侧标题:浅灰底色,突出文字 */
             QLabel#right_title {
                 background-color: #eef2f7;
                 padding: 5px 0;
                 border-radius: 4px;
             }
 
-            /* 菜单栏:浅灰背景，文字深色 */
+            /* 菜单栏:浅灰背景,文字深色 */
             QMenuBar {
                 background-color: #eef2f7;
                 color: #2c3e50;
@@ -249,7 +249,7 @@ class Ui_MainWindow(object):
                 border-radius: 3px;
             }
 
-            /* 状态栏:白色背景，文字灰色 */
+            /* 状态栏:白色背景,文字灰色 */
             QStatusBar {
                 background-color: white;
                 color: #7f8c8d;
