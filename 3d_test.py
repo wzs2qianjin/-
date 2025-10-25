@@ -7,7 +7,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from hull_interface import HullBasicParams, Hull2DLineData
+from core.hull_interface import HullBasicParams, Hull2DLineData
 from model_3d_generator import generate_3d_wireframe
 
 def create_detailed_2d_data():
