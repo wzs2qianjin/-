@@ -8,7 +8,7 @@
 # pyright: reportUnknownMemberType=false
 # pyright: reportGeneralTypeIssues=false
 
-from hull_interface import Hull2DLineData, InteractionEvent
+from core.hull_interface import Hull2DLineData, InteractionEvent
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle

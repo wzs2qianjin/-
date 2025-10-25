@@ -1,8 +1,10 @@
 {
     "cSpell.words": [
         "azim",
+        "Bivariate",
         "boxstyle",
         "centralwidget",
+        "cpython",
         "darkorange",
         "edgecolor",
         "facecolor",
@@ -12,28 +14,35 @@
         "inaxes",
         "interp",
         "iscomplexobj",
+        "labelpad",
         "matplotlib",
         "mplot",
         "numpy",
+        "pyc",
         "pyuic",
+        "qlineargradient",
         "scipy",
         "suptitle",
         "toolkits",
         "verticalalignment",
+        "xaxis",
         "xdata",
         "xlabel",
         "xlim",
         "xticks",
+        "yaxis",
         "ydata",
         "ylabel",
         "ylim",
         "yticks",
+        "zaxis",
         "zlabel",
         "zlim",
         "zorder"
     ],
     "python.analysis.extraPaths": [
-        "./stubs"
+        "./stubs",
+        "./core"
     ],
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticSeverityOverrides": {
