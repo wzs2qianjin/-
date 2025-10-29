@@ -1,0 +1,13 @@
+{
+  "name": "threejs-project",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "esbuild main.js --bundle --outfile=dist/main.js"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2"
+  }
+}
